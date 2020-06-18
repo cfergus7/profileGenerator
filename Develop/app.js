@@ -35,14 +35,32 @@ const managerQuestions = [
     ...baseQuestions,
     {
         type: 'input',
-        name: 'officeNumber'
-        message: 'Please enter the office number:',
+        name: 'officeNumber',
+        message: "Please enter the office number:",
+    },
+];
+// Intern Questions
+const internQuestions = [
+    ...baseQuestions,
+    {
+        type: 'input',
+        name: 'school',
+        message: 'Please enter your last or current place for education:',
+    },
+];
+// Engineer Questions
+const engineerQuestions = [
+    ...baseQuestions,
+    {
+        type: 'input',
+        name: 'github',
+        message: 'Please enter your GitHub username:',
     },
 ];
 // Hiring a manager
 inquirer.prompt(managerQuestions)
-    .then(function () {
-        const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+    .then((response) => {
+        const manager = new Manager(response.name, response.id, response.email, response.officeNumber);
         teamArray.push(manager);
         determineEmployee();
     });
@@ -69,31 +87,21 @@ function determineEmployee() {
 }
 //Create Intern for Team
 function internInfo() {
-    // Intern Questions
-    const internQuestions = [
-        ...baseQuestions,
-        {
-            type: 'input',
-            name: 'school'
-            message: 'Please enter your last or current place for education:',
-        },
-    ];
-    teamArray.push(Intern);
-    determineEmployee();
+    inquirer.prompt(internQuestions)
+        .then((response) => {
+            const intern = new Intern(response.name, response.id, response.email, response.school);
+            teamArray.push(intern);
+            determineEmployee();
+        })
 }
 //Create Engineer for Team
 function engineerInfo() {
-    // Engineer Questions
-    const managerQuestions = [
-        ...baseQuestions,
-        {
-            type: 'input',
-            name: 'github'
-            message: 'Please enter your GitHub username:',
-        },
-    ];
-    teamArray.push(Engineer);
-    determineEmployee();
+    inquirer.prompt(engineerQuestions)
+        .then((response) => {
+            const engineer = new Engineer(response.name, response.id, response.email, response.github);
+            teamArray.push(engineer);
+            determineEmployee();
+        })
 }
 
 function createHTMLFile() {
@@ -106,6 +114,8 @@ function createHTMLFile() {
         console.log(error);
     }
 }
+
+//init();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
